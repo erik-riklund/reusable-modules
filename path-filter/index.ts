@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2025 Erik Riklund (Gopher)
+ * <https://github.com/erik-riklund>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
 /**
  * Creates a function that filters an array of file paths based on
  * the provided pattern, returning only the entries that match.
@@ -10,29 +28,18 @@ export const makePathFilter = (pattern: string) =>
 };
 
 /**
- * Compiles the given glob pattern into a regular expression.
+ * Compiles the given glob pattern into a regular expression
+ * that can be used to match file paths against the pattern.
  */
 const compilePattern = (pattern: string) =>
 {
-  // PURPOSE:
-  // Compile the glob pattern (a string) into a regular expression
-  // that can be used to match file paths against the pattern.
-  // 
-  // The regular expression is created as follows:
-  //
-  // 1. All occurrences of '.' and '/' are escaped with '\'.
-  // 2. Replace '**/' with '([^/]+\/)*', which matches any number of subdirectories.
-  // 3. Replace '*' without a preceding ')' with '[^/]+', which matches any non-slash character.
-  // 4. Replace '{group}' with '(group)', where 'group' is a comma-separated list of values.
-
-  const escapedPattern = pattern.replace(/[./]/g, '\\$&');
-
-  const compiledPattern = escapedPattern
-    .replace(/\*{2}\\\//, '([^/]+\/)*')
-    .replace(/(?<![)])\*/, '[^/]+')
-    .replace(/\{([^}]+)}/g, (_, group) =>
-      `(${group.split(',').map((item: string) => item.trim()).join('|')})`
-    );
+  const compiledPattern =
+    pattern.replace(/[./]/g, '\\$&')
+      .replace(/\*{2}\\\//, '([^/]+\/)*')
+      .replace(/(?<![)])\*/, '[^/]+')
+      .replace(/\{([^}]+)}/g, (_, group) =>
+        `(${group.split(',').map((item: string) => item.trim()).join('|')})`
+      );
 
   return new RegExp(`^${compiledPattern}$`);
 };
