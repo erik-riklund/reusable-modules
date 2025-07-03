@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "memfs": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "scripts": {
+    "build/file-handler": "bun build --entrypoints ./file-handler/index.ts --outdir ./_temp --target node",
+    "build/path-filter": "bun build --entrypoints ./path-filter/index.ts --outdir ./_temp --target node"
+  }
+}
