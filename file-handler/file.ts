@@ -57,6 +57,14 @@ export const makeFileObject = (filePath: string, fileSystem: FileSystem) =>
     },
 
     /**
+     * ?
+     */
+    copy (targetFilePath: string)
+    {
+      fileSystem.copyFileSync(filePath, targetFilePath);
+    },
+
+    /**
      * Deletes the file if it exists.
      */
     delete ()

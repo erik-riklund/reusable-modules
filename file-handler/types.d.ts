@@ -17,6 +17,7 @@ declare global
     type FileSystem = Pick<
       typeof import('node:fs'),
 
+      | 'copyFileSync'
       | 'existsSync'
       | 'mkdirSync'
       | 'readFileSync'
