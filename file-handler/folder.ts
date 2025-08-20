@@ -1,11 +1,17 @@
+/*
+ * Copyright 2025 Erik Riklund (Gopher)
+ * <https://github.com/erik-riklund>
+ */
+
 import { makeFileObject } from './file'
+
+type FileSystem = FileHandler.FileSystem;
 
 /**
  * Creates a new folder object for the specified folder path.
  * The object provides methods to interact with the folder and its contents.
  */
-export const makeFolderObject = (
-  folderPath: string, fileSystem: FileHandler.FileSystem) =>
+export const makeFolderObject = (folderPath: string, fileSystem: FileSystem) =>
 {
   return {
     /**

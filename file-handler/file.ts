@@ -1,9 +1,15 @@
+/*
+ * Copyright 2025 Erik Riklund (Gopher)
+ * <https://github.com/erik-riklund>
+ */
+
+type FileSystem = FileHandler.FileSystem;
+
 /**
  * Creates a new file object for the specified file path.
  * The object provides methods to interact with the file.
  */
-export const makeFileObject = (
-  filePath: string, fileSystem: FileHandler.FileSystem) =>
+export const makeFileObject = (filePath: string, fileSystem: FileSystem) =>
 {
   return {
     /**

@@ -1,3 +1,8 @@
+/*
+ * Copyright 2025 Erik Riklund (Gopher)
+ * <https://github.com/erik-riklund>
+ */
+
 import { makeFileObject } from './file'
 import { makeFolderObject } from './folder'
 
