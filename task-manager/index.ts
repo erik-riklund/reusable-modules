@@ -44,30 +44,25 @@ export const makeTaskManager = <T extends TaskManager.TaskMap> (tasks: T) =>
   }
 
   /**
-   * Returns a store object that can be used to pass data between tasks. 
+   * Retrieve a value of type `T` from the store.
+   * 
+   * @param key - The key of the value to retrieve.
+   * @returns The value of type `T` associated with the given key.
    */
-  const useStore = () =>
-  {
-    return {
-      /**
-       * Retrieve a value of type `T` from the store.
-       * 
-       * @param key - The key of the value to retrieve.
-       * @returns The value of type `T` associated with the given key.
-       */
-      get: <T> (key: string) => store[key] as T,
+  const getStoreValue = <T> (key: string) => store[key] as T;
 
-      /**
-       * Set a value in the store.
-       * 
-       * @param key - The key of the value to set.
-       * @param value - The value to set in the store.
-       */
-      set: (key: string, value: unknown) => store[key] = value
-    };
-  }
+  /**
+   * Set a value in the store.
+   * 
+   * @param key - The key of the value to set.
+   * @param value - The value to set in the store.
+   */
+  const setStoreValue = (key: string, value: unknown) => store[key] = value;
 
-  return { executeTask, hasTask, useStore } as const;
+  /**
+   * Returns a task manager object with methods to execute tasks.
+   */
+  return { executeTask, hasTask, getStoreValue, setStoreValue } as const;
 };
 
 /**
