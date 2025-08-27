@@ -1,0 +1,17 @@
+{
+  "comment":
+  {
+    "prefix": "comment",
+    "body":"//\n// ?\n//"
+  },
+  "copyright":
+  {
+    "prefix": "copyright",
+    "body": [
+      "//",
+      "// Copyright 2025 Erik Riklund (Gopher)",
+      "// <https://github.com/erik-riklund>",
+      "//"
+    ]
+  }
+}
