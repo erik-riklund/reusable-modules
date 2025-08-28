@@ -12,7 +12,7 @@ import type { Stage } from 'composable-pipeline/types'
 //
 export const parse: Stage<string, Array<Line>> = async (input) =>
 {
-  const lines = input.split(/\r?\n/);
+  const lines = input.replaceAll('`', '\\`').split(/\r?\n/);
 
   return lines.map((line, index) => [index, line.trim()]);
 }
