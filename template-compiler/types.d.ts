@@ -1,14 +1,30 @@
-export {};
-
 //
 // Copyright 2025 Erik Riklund (Gopher)
 // <https://github.com/erik-riklund>
 //
 
-declare global
+//
+// ?
+//
+export type Line = [number, string];
+
+//
+// ?
+//
+export interface Handler
 {
-  namespace TemplateCompiler
-  {
-    // ...
-  }
+  //
+  // ?
+  //
+  test: (line: string) => boolean,
+
+  //
+  // ?
+  //
+  transform: (input: Line) => Promise<Line>
 }
+
+//
+// ?
+//
+export type RenderFunction = (context: Record<string, any>) => string;
