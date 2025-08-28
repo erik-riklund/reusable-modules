@@ -3,12 +3,12 @@
 // <https://github.com/erik-riklund>
 //
 
-import type { Tasks, Store } from './types'
+import type { Store } from './types'
 
 //
 // Returns a task manager that can be used to execute the defined `tasks`.
 //
-export const createTaskManager = <T extends Tasks> (tasks: T) => 
+export const createTaskManager = <T> (tasks: T) => 
 {
   //
   // An object used to share data between tasks.
@@ -27,8 +27,18 @@ export const createTaskManager = <T extends Tasks> (tasks: T) =>
   //
   // Executes the task `name` with the provided `input`.
   //
-  return async <K extends keyof T> (name: K, input: Parameters<T[K]>[0]) =>
+  return async <K extends keyof T> (name: K,
+    input: T[K] extends (input: infer I, store: Store) => unknown ? I : never) =>
   {
-    return await tasks[name](input, store) as ReturnType<T[K]>;
+    if (!tasks[name])
+    {
+      throw new Error(`Task "${String(name)}" does not exist`);
+    }
+
+    // @ts-expect-error: `T` lacks call signature.
+    return await tasks[name](input, store) as (
+      // @ts-expect-error: Type mismatch against the task signature.
+      ReturnType<T[K]> extends Promise<infer R> ? R : ReturnType<T[K]>
+    );
   }
 }
