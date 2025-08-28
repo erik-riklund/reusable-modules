@@ -1,7 +1,9 @@
-/*
- * Copyright 2025 Erik Riklund (Gopher)
- * <https://github.com/erik-riklund>
- */
+//
+// Copyright 2025 Erik Riklund (Gopher)
+// <https://github.com/erik-riklund>
+//
+// @version 1.0.0
+//
 
 import { makePathFilter } from 'path-filter'
 

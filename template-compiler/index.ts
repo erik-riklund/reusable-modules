@@ -2,6 +2,8 @@
 // Copyright 2025 Erik Riklund (Gopher)
 // <https://github.com/erik-riklund>
 //
+// @version 1.0.0
+//
 
 import type { RenderFunction } from './types'
 import { createPipeline } from 'composable-pipeline'

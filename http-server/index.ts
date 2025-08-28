@@ -1,3 +1,10 @@
+//
+// Copyright 2025 Erik Riklund (Gopher)
+// <https://github.com/erik-riklund>
+//
+// @version 1.0.0
+//
+
 /**
  * Creates a new HTTP server instance, using the specified adapter and options.
  *

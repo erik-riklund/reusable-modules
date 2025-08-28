@@ -1,12 +1,14 @@
-/*
- * Copyright 2025 Erik Riklund (Gopher)
- * <https://github.com/erik-riklund>
- */
+//
+// Copyright 2025 Erik Riklund (Gopher)
+// <https://github.com/erik-riklund>
+//
+// @version 1.0.0
+//
 
-/**
- * Creates a function that filters an array of file paths based on
- * the provided pattern, returning only the entries that match.
- */
+//
+// Creates a function that filters an array of file paths based on
+// the provided pattern, returning only the entries that match.
+//
 export const makePathFilter = (pattern: string) =>
 {
   const compiledPattern = compilePattern(pattern);
@@ -14,10 +16,10 @@ export const makePathFilter = (pattern: string) =>
   return (filePaths: string[]) => filePaths.filter((path) => compiledPattern.test(path));
 };
 
-/**
- * Compiles the given glob pattern into a regular expression
- * that can be used to match file paths against the pattern.
- */
+//
+// Compiles the given glob pattern into a regular expression
+// that can be used to match file paths against the pattern.
+//
 const compilePattern = (pattern: string) =>
 {
   const compiledPattern =
