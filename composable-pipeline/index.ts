@@ -3,12 +3,12 @@
 // <https://github.com/erik-riklund>
 //
 
-import type { Pipeline } from './types'
+import type { Stages } from './types'
 
 //
 // Creates a sequential pipeline from a list of asyncronous stages.
 //
-export const createPipeline = <I, R> (stages: Pipeline.Stages) =>
+export const createPipeline = <I, R> (stages: Stages) =>
 {
   return async (input: I) =>
   {
