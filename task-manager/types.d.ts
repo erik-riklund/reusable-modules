@@ -1,27 +1,20 @@
-export {};
+//
+// Copyright 2025 Erik Riklund (Gopher)
+// <https://github.com/erik-riklund>
+//
 
-/*
- * Copyright 2025 Erik Riklund (Gopher)
- * <https://github.com/erik-riklund>
- */
+//
+// A list of named tasks, where each task is an asyncronous function
+// that accepts a single argument and returns a value.
+//
+export type Tasks = {
+  [name: string]: (input: unknown, store: Store) => Promise<unknown>
+}
 
-declare global
-{
-  namespace TaskManager
-  {
-    /**
-     * Represents a task manager that can execute tasks synchronously.
-     *
-     * @param name - The name of the task to execute.
-     * @param input - The input to pass to the task.
-     * @returns The result of the task.
-     */
-    type Instance<T extends TaskMap> =
-      <K extends keyof T>(name: K, input: Parameters<T[K]>[0]) => ReturnType<T[K]>;
-
-    /**
-     * Represents a map of task names to their corresponding function types.
-     */
-    type TaskMap = { [K in string]: (input: any) => any; };
-  }
+//
+// The contract for the store that can be used to share data between tasks.
+//
+export type Store = {
+  getValue: <T> (name: string) => T,
+  setValue: (name: string, value: unknown) => void
 }
