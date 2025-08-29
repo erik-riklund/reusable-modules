@@ -8,7 +8,7 @@ import type { Stage } from 'composable-pipeline/types'
 //
 // ?
 //
-export const outputToString: Stage<Array<string>, string> = async (input) =>
+export const outputToString: Stage<string, string> = async (input) =>
 {
-  return input.join('\n');
+  return input;
 }

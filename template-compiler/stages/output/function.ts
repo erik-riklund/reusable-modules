@@ -9,7 +9,7 @@ import type { RenderFunction } from 'template-compiler/types'
 //
 // ?
 //
-export const outputToFunction: Stage<Array<string>, RenderFunction> = async (input) =>
+export const outputToFunction: Stage<string, RenderFunction> = async (input) =>
 {
-  return (context) => input.join('\n');
+  return new Function('context', input) as RenderFunction;
 }
