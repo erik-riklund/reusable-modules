@@ -11,20 +11,18 @@ import { compileTemplate } from 'template-compiler'
 describe('toString',
   () =>
   {
-    it('should return a plain text template in its original form',
+    it('should return a stringifed render function',
 
       async () =>
       {
         const input = 'Hello world\nI\'m a template!';
         const result = await compileTemplate.toString(input);
 
-        expect(result).toBe(input);
+        expect(result).toContain(input);
       }
     );
 
     // ---
-
-    // ...
   }
 );
 
