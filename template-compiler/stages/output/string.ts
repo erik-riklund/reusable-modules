@@ -6,9 +6,14 @@
 import type { Stage } from 'composable-pipeline/types'
 
 //
-// ?
+// Creates a stringified render function.
 //
-export const outputToString: Stage<string, string> = async (input) =>
+export const outputToString: Stage<string, string> = async (body) =>
 {
-  return input;
+  return `
+  (context) =>
+  {
+    ${body}
+  }
+  `;
 }

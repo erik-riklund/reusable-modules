@@ -7,7 +7,7 @@ import type { Stage } from 'composable-pipeline/types'
 import type { RenderFunction } from 'template-compiler/types'
 
 //
-// ?
+// Creates a render function from a string.
 //
 export const outputToFunction: Stage<string, RenderFunction> = async (input) =>
 {

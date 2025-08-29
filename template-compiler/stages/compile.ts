@@ -12,5 +12,9 @@ export const compile: Stage<Array<string>, string> = async (input) =>
 {
   const body = input.join('\n');
 
-  return `return \`${body}\`;`;
+  return `
+    const sanitize = (input) => input.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+    return \`${body}\`;
+  `;
 }
