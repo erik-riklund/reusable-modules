@@ -17,6 +17,22 @@ export const replaceVariables: Handler =
 
   transform: async (input) =>
   {
-    return Promise.resolve(input);
+    const [index, line] = input;
+
+    return [
+      index,
+
+      line.replace(
+        /\{\$(\w+(?:\.\w+)*)(!?)}/g,
+
+        (_, variable, encoded) =>
+        {
+          const sanitize = encoded !== '!';
+          const output = `typeof ${variable} !== 'undefined' ? ${variable} : context.${variable} ?? 'undefined'`;
+
+          return `\${${sanitize ? `sanitize(${output})` : output}}`;
+        }
+      )
+    ];
   }
 }
