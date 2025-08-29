@@ -3,6 +3,7 @@
 // <https://github.com/erik-riklund>
 //
 
+import { formatString } from 'format-string'
 import type { Handler } from 'template-compiler/types'
 
 //
@@ -10,27 +11,28 @@ import type { Handler } from 'template-compiler/types'
 //
 export const replaceVariables: Handler =
 {
-  test: (line) =>
-  {
-    return line.includes('{$');
-  },
+  test: (type) => type === 'variable',
 
-  transform: async (input) =>
+  transform: async (index, { content }) =>
   {
-    const [index, line] = input;
-
     return [
       index,
 
-      line.replace(
+      content.replace(
         /\{\$(\w+(?:\.\w+)*)(!?)}/g,
 
-        (_, variable, encoded) =>
+        (_, variable: string, encoded: string) =>
         {
           const sanitize = encoded !== '!';
-          const output = `typeof ${variable} !== 'undefined' ? ${variable} : context.${variable} ?? 'undefined'`;
+          const safeVariable = variable.replace(/\./g, '?.');
+          const topLevelVariable = variable.split('.')[0];
 
-          return `\${${sanitize ? `sanitize(${output})` : output}}`;
+          const output = formatString(
+            "typeof %1 !== 'undefined' ? %2 : context.%2 ?? 'undefined'",
+            [topLevelVariable, safeVariable]
+          );
+
+          return `append(${sanitize ? `sanitize(${output})` : output});`;
         }
       )
     ];

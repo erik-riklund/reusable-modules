@@ -4,13 +4,8 @@
 //
 
 import type { Stage } from 'composable-pipeline/types'
-import type { Line, Handler } from 'template-compiler/types'
-
-//
-// ?
-//
-export const OPENING_TAG = '@';
-export const CLOSING_TAG = '===';
+import type { Chunk, Handler } from 'template-compiler/types'
+import { OPENING_TAG, CLOSING_TAG } from './parse'
 
 //
 // ?
@@ -25,39 +20,46 @@ const handlers: Array<Handler> = [];
 //
 // ?
 //
-export const transform: Stage<Array<Line>, Array<string>> = async (lines) =>
+export const transform: Stage<Array<Chunk>, Array<string>> = async (input) =>
 {
-  const result: Array<string> = [];
-  const processedLines: Array<Promise<Line>> = [];
 
-  for (const [index, line] of lines)
-  {
-    if (line.startsWith(OPENING_TAG))
-    {
-      // ...
-    }
-    else if (line === CLOSING_TAG)
-    {
-      // ...
-    }
-    else if (replaceVariables.test(line))
-    {
-      //
-      // ?
-      //
-      processedLines.push(replaceVariables.transform([index, line]));
-    }
-    else
-    {
-      //
-      // The line requires no special processing.
-      //
-      processedLines.push(Promise.resolve([index, line]));
-    }
-  }
 
-  const transformedLines = await Promise.all(processedLines);
-  for (const [index, line] of transformedLines) result[index] = line;
+  // const result: Array<string> = [];
+  // const processedLines: Array<Promise<Line>> = [];
 
-  return result;
+  // for (const [index, line] of lines)
+  // {
+  //   if (line.startsWith(OPENING_TAG))
+  //   {
+  //     for (const handler of handlers)
+  //     {
+  //       if (handler.test(line))
+  //       {
+  //         processedLines.push(
+  //           handler.transform([index, line.slice(OPENING_TAG.length)])
+  //         );
+
+  //         break; // move on to the next line.
+  //       }
+  //     }
+  //   }
+  //   else if (line === CLOSING_TAG)
+  //   {
+  //     processedLines.push(Promise.resolve([index, '})}']));
+  //   }
+  //   else if (replaceVariables.test(line))
+  //   {
+  //     processedLines.push(replaceVariables.transform([index, line]));
+  //   }
+  //   else
+  //   {
+  //     // the line requires no special processing.
+  //     processedLines.push(Promise.resolve([index, line]));
+  //   }
+  // }
+
+  // const transformedLines = await Promise.all(processedLines);
+  // for (const [index, line] of transformedLines) result[index] = line;
+
+  // return result;
 }

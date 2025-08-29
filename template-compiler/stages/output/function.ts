@@ -9,7 +9,9 @@ import type { RenderFunction } from 'template-compiler/types'
 //
 // Creates a render function from a string.
 //
-export const outputToFunction: Stage<string, RenderFunction> = async (input) =>
+export const outputToFunction: Stage<string, RenderFunction> = async (body) =>
 {
-  return new Function('context', input) as RenderFunction;
+  console.debug('debug:', body);
+
+  return new Function('context', body) as RenderFunction;
 }

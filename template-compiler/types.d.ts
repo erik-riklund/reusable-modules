@@ -6,7 +6,23 @@
 //
 // ?
 //
-export type Line = [number, string];
+export interface Chunk
+{
+  //
+  // ?
+  //
+  type: 'text' | 'variable' | 'directive',
+
+  //
+  // ?
+  //
+  content: string
+}
+
+//
+// ?
+//
+export type TransformedChunk = [number, string];
 
 //
 // ?
@@ -16,12 +32,12 @@ export interface Handler
   //
   // ?
   //
-  test: (line: string) => boolean,
+  test: (type: Chunk['type']) => boolean,
 
   //
   // ?
   //
-  transform: (input: Line) => Promise<Line>
+  transform: (index: number, chunk: Chunk) => Promise<TransformedChunk>
 }
 
 //
