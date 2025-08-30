@@ -2,33 +2,64 @@
 // Copyright 2025 Erik Riklund (Gopher)
 // <https://github.com/erik-riklund>
 //
-// @version 1.0.0
+// @version 2.0.0
 //
 
-//
-// Creates a function that filters an array of file paths based on
-// the provided pattern, returning only the entries that match.
-//
 export const createPathFilter = (pattern: string) =>
 {
-  const compiledPattern = compilePattern(pattern);
+  const expression = new RegExp(translatePattern(pattern));
 
-  return (filePaths: string[]) => filePaths.filter((path) => compiledPattern.test(path));
-};
+  return (path: string) => expression.test(path);
+}
 
-//
-// Compiles the given glob pattern into a regular expression
-// that can be used to match file paths against the pattern.
-//
-const compilePattern = (pattern: string) =>
+// ---
+
+export const translatePattern = (pattern: string) =>
 {
-  const compiledPattern =
-    pattern.replace(/[./]/g, '\\$&')
-      .replace(/\*{2}\\\//, '([^/]+\/)*')
-      .replace(/(?<![)])\*/, '[^/]+')
-      .replace(/\{([^}]+)}/g, (_, group) =>
-        `(${group.split(',').map((item: string) => item.trim()).join('|')})`
-      );
+  const result: Array<string> = [''];
 
-  return new RegExp(`^${compiledPattern}$`);
-};
+  for (let i = 0, depth = 0; i < pattern.length; i++)
+  {
+    const current = pattern[i];
+
+    switch (current)
+    {
+      case '*':
+        const next = i + 1 < pattern.length ? pattern[i + 1] : null;
+
+        if (next === '*')
+        {
+          i += 2;
+
+          result.push('([^/]+/)*');
+          break;
+        }
+
+        result.push('[^/]+');
+        break;
+
+      case '{':
+        depth++;
+
+        result.push('(');
+        break;
+
+      case ',':
+        result.push(depth > 0 ? '|' : ',');
+        break;
+
+      case '}':
+        depth--;
+
+        result.push(')');
+        break;
+
+      default:
+        const specials = ['+', '.'];
+
+        result.push(specials.includes(current) ? `\\${current}` : current);
+    }
+  }
+
+  return `^${result.join('')}$`;
+}
