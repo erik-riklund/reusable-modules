@@ -9,7 +9,7 @@
 // Creates a function that filters an array of file paths based on
 // the provided pattern, returning only the entries that match.
 //
-export const makePathFilter = (pattern: string) =>
+export const createPathFilter = (pattern: string) =>
 {
   const compiledPattern = compilePattern(pattern);
 
