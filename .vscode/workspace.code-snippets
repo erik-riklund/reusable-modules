@@ -4,14 +4,28 @@
     "prefix": "comment",
     "body":"//\n// ?\n//"
   },
-  "copyright":
+  "document":
   {
-    "prefix": "copyright",
+    "prefix": "document",
     "body": [
       "//",
       "// Copyright 2025 Erik Riklund (Gopher)",
       "// <https://github.com/erik-riklund>",
-      "//"
+      "//\n",
+      "// [imports]\n",
+      "// ---"
+    ]
+  },
+  "tests":
+  {
+    "prefix":"tests",
+    "body": [
+      "//",
+      "// Copyright 2025 Erik Riklund (Gopher)",
+      "// <https://github.com/erik-riklund>",
+      "//\n",
+      "import { it, expect } from 'bun:test'\n",
+      "// ---"
     ]
   }
 }
