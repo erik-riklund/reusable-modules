@@ -6,8 +6,8 @@
 //
 
 import { createFileHandler } from './handlers/file'
-import { createFolderHandler } from './handlers/folder'
-import type { FileSystemAdapter } from 'fs-wrapper/types'
+import { createDirectoryHandler } from './handlers/directory'
+import type { FileSystemAdapter } from 'fs-adapter/types'
 
 // ---
 
@@ -15,6 +15,6 @@ export const createFileSystemManager = (adapter: FileSystemAdapter) =>
 {
   return {
     file: (filePath: string) => createFileHandler(adapter, filePath),
-    folder: (folderPath: string) => createFolderHandler(adapter, folderPath)
+    folder: (folderPath: string) => createDirectoryHandler(adapter, folderPath)
   }
 }

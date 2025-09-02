@@ -3,14 +3,14 @@
 // <https://github.com/erik-riklund>
 //
 
-import type { FileSystemAdapter } from 'fs-wrapper/types'
+import type { FileSystemAdapter } from 'fs-adapter/types'
 
 // ---
 
 //
 // ?
 //
-export const nodeFileSystemAdapter: FileSystemAdapter =
+export const mockFileSystemAdapter: FileSystemAdapter =
 {
   // ...
 }

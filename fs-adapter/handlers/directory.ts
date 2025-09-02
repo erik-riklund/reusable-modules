@@ -6,11 +6,12 @@
 import { createFileHandler } from './file'
 import { createPathFilter } from 'path-filter'
 
-import type { FileSystemAdapter } from 'fs-wrapper/types'
+import type { FileSystemAdapter } from 'fs-adapter/types'
 
 // ---
 
-export const createFolderHandler = (adapter: FileSystemAdapter, folderPath: string) =>
+export const createDirectoryHandler = (
+  adapter: FileSystemAdapter, path: string) =>
 {
   return {
     //
@@ -18,19 +19,19 @@ export const createFolderHandler = (adapter: FileSystemAdapter, folderPath: stri
     //
     file: (filePath: string) => 
     {
-      return createFileHandler(adapter, `${folderPath}/${filePath}`);
+      return createFileHandler(adapter, `${path}/${filePath}`);
     },
 
     //
-    // Creates a new folder handler object for the given subfolder path.
+    // Creates a new directory handler object for the given path.
     //
-    folder: (subfolderPath: string) => 
+    folder: (subpath: string) => 
     {
-      return createFolderHandler(adapter, `${folderPath}/${subfolderPath}`);
+      return createDirectoryHandler(adapter, `${path}/${subpath}`);
     },
 
     //
-    // Returns an array of file handler objects for the files in the folder.
+    // Returns an array of file handler objects for the files in the directory.
     //
     listFiles: async (options?: { recursive: boolean }) =>
     {
@@ -41,7 +42,7 @@ export const createFolderHandler = (adapter: FileSystemAdapter, folderPath: stri
     },
 
     //
-    // Searches the folder for files that match the given pattern.
+    // Searches the directory for files that match the given pattern.
     // The results are returned as an array of file handler objects.
     //
     searchFiles: async function (pattern: string)

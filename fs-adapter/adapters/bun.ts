@@ -3,7 +3,7 @@
 // <https://github.com/erik-riklund>
 //
 
-import type { FileSystemAdapter } from 'fs-wrapper/types'
+import type { FileSystemAdapter } from 'fs-adapter/types'
 
 // ---
 
