@@ -7,7 +7,10 @@ import type { FileSystemAdapter } from 'fs-wrapper/types'
 
 // ---
 
-export const createFileHandler = (adapter: FileSystemAdapter, filePath: string) =>
+//
+// ?
+//
+export const mockFileSystemAdapter: FileSystemAdapter =
 {
   // ...
 }
