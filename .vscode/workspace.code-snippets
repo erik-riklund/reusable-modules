@@ -4,12 +4,12 @@
     "prefix": "comment",
     "body": "//\n// ?\n//"
   },
-  "copyright":
+  "author":
   {
-    "prefix": "copyright",
+    "prefix": "author",
     "body": [
       "//",
-      "// Copyright 2025 Erik Riklund (Gopher)",
+      "// Created by Erik Riklund (Gopher)",
       "// <https://github.com/erik-riklund>",
       "//",
     ]
@@ -42,8 +42,8 @@
   {
     "prefix":"test-case",
     "body": [
-      "it('should ${1}',\n",
-      "  () =>",
+      "it.todo('should ${1}',\n",
+      "  async () =>",
       "  {",
       "    // ...",
       "  }",
