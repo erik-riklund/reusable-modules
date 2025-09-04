@@ -2,6 +2,8 @@
 // Copyright 2025 Erik Riklund (Gopher)
 // <https://github.com/erik-riklund>
 //
+// @version 1.0.0
+//
 
 //
 // Formats a string with the given values. Placeholders, denoted by %1, %2, etc.,
