@@ -2,10 +2,6 @@
   "private": true,
   "type": "module",
   "devDependencies": {
-    "@types/bun": "latest",
-    "memfs": "^4.38.2"
-  },
-  "peerDependencies": {
-    "typescript": "^5"
+    "@types/bun": "latest"
   }
 }
