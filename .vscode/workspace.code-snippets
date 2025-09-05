@@ -1,9 +1,4 @@
 {
-  "comment":
-  {
-    "prefix": "comment",
-    "body": "//\n// ?\n//"
-  },
   "author":
   {
     "prefix": "author",
@@ -14,33 +9,23 @@
       "//",
     ]
   },
-  "document":
-  {
-    "prefix": "document",
-    "body": [
-      "//",
-      "// Copyright 2025 Erik Riklund (Gopher)",
-      "// <https://github.com/erik-riklund>",
-      "//\n",
-      "// [imports]\n",
-      "// ---\n\n"
-    ]
-  },
+
   "tests":
   {
     "prefix": "tests",
     "body": [
       "//",
-      "// Copyright 2025 Erik Riklund (Gopher)",
+      "// Created by Erik Riklund (Gopher)",
       "// <https://github.com/erik-riklund>",
       "//\n",
       "import { it, expect } from 'bun:test'\n",
       "// ---"
     ]
   },
+
   "test-case":
   {
-    "prefix":"test-case",
+    "prefix": "test-case",
     "body": [
       "it.todo('should ${1}',\n",
       "  async () =>",
