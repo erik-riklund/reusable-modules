@@ -12,9 +12,8 @@ type MockDirectory = { [directory: string]: Record<string, MockFile> };
 
 const getMockDirectoryPath = (path: string) =>
 {
-  //
-  // Replace leading `./` with `/`, OR replace the path `.` with `/`, OR add `/` at the beginning.
-  //
+  if (path.startsWith('/')) return path;
+
   return path.startsWith('./') ? path.slice(1) : (path === '.' ? '/' : `/${path}`);
 }
 
@@ -23,6 +22,10 @@ const getMockFilePaths = (path: string) =>
   const mockPath = getMockDirectoryPath(path);
   const parentPath = mockPath.slice(0, mockPath.lastIndexOf('/'));
   const fileName = mockPath.slice(parentPath.length + 1);
+
+  // console.debug('mockPath:', mockPath);
+  // console.debug('parentPath:', parentPath);
+  // console.debug('fileName:', fileName);
 
   return { parentPath, fileName };
 }
@@ -52,6 +55,9 @@ export const createMockFileSystemAdapter = (content: MockDirectory): FileSystemA
       {
         const { parentPath, fileName } = getMockFilePaths(path);
         const fileExists = (parentPath in content) && (fileName in content[parentPath]);
+
+        // console.debug('content:', content);
+        // console.debug('fileExists:', fileExists);
 
         return fileExists ? content[parentPath][fileName].modified : null;
       },
@@ -114,13 +120,13 @@ export const createMockFileSystemAdapter = (content: MockDirectory): FileSystemA
       list: async (path) =>
       {
         const mockPath = getMockDirectoryPath(path);
-
+        
         return [
           ...Object.keys(content)
             .filter(key => new RegExp(`^${mockPath}\\/[^/]+$`).test(key))
             .map(key => ({ type: 'directory', path: key.slice(mockPath.length + 1) })),
 
-          ...Object.keys(content[mockPath]).map(key => ({ type: 'file', path: key }))
+          ...Object.keys(content[mockPath] ?? {}).map(key => ({ type: 'file', path: key }))
 
         ] as DirectoryEntry[];
       }
