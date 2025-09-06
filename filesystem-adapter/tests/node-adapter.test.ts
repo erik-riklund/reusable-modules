@@ -1,5 +1,5 @@
 //
-// Copyright 2025 Erik Riklund (Gopher)
+// Created by Erik Riklund (Gopher)
 // <https://github.com/erik-riklund>
 //
 
@@ -8,7 +8,7 @@ import { tmpdir } from 'node:os'
 import { mkdtemp, rmdir } from 'node:fs/promises'
 
 import { it, expect, beforeEach, afterEach } from 'bun:test'
-import { nodeFileSystemAdapter } from 'adapters/node'
+import { nodeFileSystemAdapter } from '../adapters/node'
 
 const { file, directory } = nodeFileSystemAdapter;
 

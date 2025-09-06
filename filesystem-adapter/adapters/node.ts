@@ -3,10 +3,10 @@
 // <https://github.com/erik-riklund>
 //
 
-import type { DirectoryEntry, FileSystemAdapter } from 'types'
-
 import { dirname } from 'node:path'
 import { exists, mkdir, readdir, readFile, rm, rmdir, stat, writeFile } from 'node:fs/promises'
+
+import type { DirectoryEntry, FileSystemAdapter } from 'filesystem-adapter/types'
 
 // ---
 
@@ -27,6 +27,11 @@ export const nodeFileSystemAdapter: FileSystemAdapter =
     exists: (path) =>
     {
       return exists(path);
+    },
+
+    modified: async (path) =>
+    {
+      return (await stat(path)).mtimeMs;
     },
 
     read: async (path) =>

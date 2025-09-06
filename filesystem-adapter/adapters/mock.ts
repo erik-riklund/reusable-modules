@@ -3,8 +3,7 @@
 // <https://github.com/erik-riklund>
 //
 
-import { dirname, join } from 'node:path'
-import type { DirectoryEntry, FileSystemAdapter } from 'types'
+import type { DirectoryEntry, FileSystemAdapter } from 'filesystem-adapter/types'
 
 type MockDirectory = { [directory: string]: Record<string, string> };
 
@@ -29,11 +28,7 @@ const getMockFilePaths = (path: string) =>
 
 // ---
 
-//
-// ?
-//
-export const createMockFileSystemAdapter = (
-  content: MockDirectory): FileSystemAdapter =>
+export const createMockFileSystemAdapter = (content: MockDirectory): FileSystemAdapter =>
 {
   return {
     file:
@@ -50,6 +45,14 @@ export const createMockFileSystemAdapter = (
         const { parentPath, fileName } = getMockFilePaths(path);
 
         return (parentPath in content) && (fileName in content[parentPath]);
+      },
+
+      modified: async (path) =>
+      {
+        const { parentPath, fileName } = getMockFilePaths(path);
+        const fileExists = (parentPath in content) && (fileName in content[parentPath]);
+
+        return fileExists ? Date.now() : null;
       },
 
       read: async (path) =>

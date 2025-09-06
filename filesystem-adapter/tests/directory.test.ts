@@ -1,13 +1,13 @@
 //
-// Copyright 2025 Erik Riklund (Gopher)
+// Created by Erik Riklund (Gopher)
 // <https://github.com/erik-riklund>
 //
 
-import type { FileSystemHandler } from 'types'
-
 import { it, expect, beforeEach } from 'bun:test'
-import { createFileSystemHandler } from 'index'
-import { createMockFileSystemAdapter } from 'adapters/mock'
+import { createFileSystemHandler } from 'filesystem-adapter/index'
+import { createMockFileSystemAdapter } from 'filesystem-adapter/adapters/mock'
+
+import type { FileSystemHandler } from 'filesystem-adapter/types'
 
 // ---
 
