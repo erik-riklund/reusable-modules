@@ -5,11 +5,12 @@
 
 import type { DirectoryEntry, FileSystemAdapter } from 'filesystem-adapter/types'
 
-type MockDirectory = { [directory: string]: Record<string, string> };
+type MockFile = { content: string, modified: number };
+type MockDirectory = { [directory: string]: Record<string, MockFile> };
 
 // ---
 
-const getMockDirectoryPath = (path: string) => 
+const getMockDirectoryPath = (path: string) =>
 {
   //
   // Replace leading `./` with `/`, OR replace the path `.` with `/`, OR add `/` at the beginning.
@@ -52,7 +53,7 @@ export const createMockFileSystemAdapter = (content: MockDirectory): FileSystemA
         const { parentPath, fileName } = getMockFilePaths(path);
         const fileExists = (parentPath in content) && (fileName in content[parentPath]);
 
-        return fileExists ? Date.now() : null;
+        return fileExists ? content[parentPath][fileName].modified : null;
       },
 
       read: async (path) =>
@@ -60,21 +61,26 @@ export const createMockFileSystemAdapter = (content: MockDirectory): FileSystemA
         const { parentPath, fileName } = getMockFilePaths(path);
         const fileExists = (parentPath in content) && (fileName in content[parentPath]);
 
-        return fileExists ? Buffer.from(content[parentPath][fileName]) : null;
+        return fileExists ? Buffer.from(content[parentPath][fileName].content) : null;
       },
 
       size: async (path) =>
       {
         const { parentPath, fileName } = getMockFilePaths(path);
 
-        return content[parentPath]?.[fileName]?.length ?? null;
+        return content[parentPath]?.[fileName]?.content.length ?? null;
       },
 
       write: async (path, data) =>
       {
         const { parentPath, fileName } = getMockFilePaths(path);
 
-        content[parentPath] = { ...content[parentPath], [fileName]: data as string };
+        content[parentPath] =
+        {
+          ...content[parentPath],
+
+          [fileName]: { content: data.toString(), modified: Date.now() }
+        };
       }
     },
 

@@ -17,13 +17,19 @@ beforeEach(() =>
   fileSystemHandler = createFileSystemHandler(
     createMockFileSystemAdapter(
       {
-        '/': { 'package.json': '{}' },
-        '/src': {
-          'index.ts': 'export * from "./lib/index";',
-          'config.json': '{ "foo": "bar" }'
+        '/': {
+          'package.json': { content: '{}', modified: Date.now() }
         },
-        '/src/lib': { 'index.ts': 'export * from "./utils/foo";' },
-        '/src/lib/utils': { 'foo.ts': 'export * from "./foo";' }
+        '/src': {
+          'index.ts': { content: 'export * from "./lib/index";', modified: Date.now() - 1 },
+          'config.json': { content: '{ "foo": "bar" }', modified: Date.now() - 3 }
+        },
+        '/src/lib': {
+          'index.ts': { content: 'export * from "./utils/foo";', modified: Date.now() - 2 }
+        },
+        '/src/lib/utils': {
+          'foo.ts': { content: 'export * from "./foo";', modified: Date.now() - 4 }
+        }
       }
     )
   )
@@ -109,7 +115,7 @@ it('should return a recursive list of the contents of the directory',
   {
     const directory = fileSystemHandler.directory('src');
     const list = await directory.list({ deep: true });
-    
+
     expect(list).toContainEqual({ type: 'file', path: 'src/index.ts' });
     expect(list).toContainEqual({ type: 'file', path: 'src/config.json' });
     expect(list).toContainEqual({ type: 'directory', path: 'src/lib' });
