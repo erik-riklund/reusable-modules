@@ -19,9 +19,7 @@ let targetDirectory: string;
 beforeEach(
   async () =>
   {
-    targetDirectory = await mkdtemp(
-      join(tmpdir(), 'node-adapter-')
-    );
+    targetDirectory = await mkdtemp(join(tmpdir(), 'node-adapter-'));
   }
 );
 
@@ -105,6 +103,31 @@ it('should return `null` when determining the size of a file that does not exist
     const path = join(targetDirectory, 'foo.txt');
 
     expect(await file.size(path)).toBe(null);
+  }
+);
+
+// ---
+
+it('should return a timestamp indicating when the file with the specified path was last modified',
+
+  async () =>
+  {
+    await createMockContents(targetDirectory);
+    const path = join(targetDirectory, 'src/index.ts');
+    
+    expect(await file.modified(path)).toBeTypeOf('number');
+  }
+);
+
+// ---
+
+it('should return `null` when requesting the timestamp of a file that does not exist',
+
+  async () =>
+  {
+    const path = join(targetDirectory, 'foo.txt');
+
+    expect(await file.modified(path)).toBe(null);
   }
 );
 

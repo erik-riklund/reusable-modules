@@ -31,7 +31,12 @@ export const nodeFileSystemAdapter: FileSystemAdapter =
 
     modified: async (path) =>
     {
-      return (await stat(path)).mtimeMs;
+      try
+      {
+        return (await stat(path)).mtimeMs;
+      }
+      
+      catch { return null; }
     },
 
     read: async (path) =>
