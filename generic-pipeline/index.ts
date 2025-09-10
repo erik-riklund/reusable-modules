@@ -1,13 +1,13 @@
 //
-// Created by Erik Riklund (Gopher)
+// Created by Erik Riklund (Gopher) 2025
 // <https://github.com/erik-riklund>
 //
 
-import type { Stages } from './types'
+type Stage<I, R> = (input: I) => Promise<R>;
+type Stages = Array<Stage<any, any>>;
 
-//
-// Creates a sequential pipeline from a list of asyncronous stages.
-//
+// ---
+
 export const createPipeline = <I, R> (stages: Stages) =>
 {
   return async (input: I) =>
