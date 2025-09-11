@@ -2,16 +2,20 @@
 // Created by Erik Riklund (Gopher)
 // <https://github.com/erik-riklund>
 //
-// @version 1.0.0
+// @version 1.1.0
 //
 
-//
-// Formats a string with the given values. Placeholders, denoted by %1, %2, etc.,
-// are replaced with the corresponding values in the values array.
-//
 export const formatString = (input: string, values: Array<string>) =>
 {
-  return input.replace(/%(\d+)/g,
-    (_match, index: number) => values[index - 1] ?? 'undefined'
-  );
+  return input.replace
+    (
+      /%(\{\d+\}|\d+)/g,
+
+      (_, index: string) => 
+      {
+        index = index.replace(/[{}]/g, '');
+
+        return values[Number(index) - 1] ?? 'undefined';
+      }
+    );
 }

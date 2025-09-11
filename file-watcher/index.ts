@@ -128,6 +128,19 @@ export const createFileWatcher = (
   );
 
   return {
+    any: (callback: Observer) =>
+    {
+      for (const event in observers)
+      {
+        const eventName = event as WatcherEvent;
+
+        if (!observers[eventName].some(o => o.callback === callback))
+        {
+          observers[eventName].push({ callback, invoked: 0 });
+        }
+      }
+    },
+
     on: (event: WatcherEvent, callback: Observer) =>
     {
       if (!observers[event].some(o => o.callback === callback))
