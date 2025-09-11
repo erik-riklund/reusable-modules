@@ -25,14 +25,17 @@ const replaceColorTags = (text: string) =>
   return text.replace(
     /<(\w+):"([^"]*)">/g,
 
-    (_, color: keyof typeof colorCodes, value: string) =>
-      color in colorCodes ? (colorCodes[color] + value + '\x1b[0m') : value
+    (_, color, value) =>
+    {
+      return color in colorCodes
+        ? (colorCodes[color] + value + '\x1b[0m') : value;
+    }
   );
 }
 
 // ---
 
-export const print = (message: string, ...args: Array<string | number>) =>
+export const print = (message: string, ...args) =>
 {
   const values = args.map(value => String(value));
 
@@ -41,20 +44,18 @@ export const print = (message: string, ...args: Array<string | number>) =>
 
 // ---
 
-export const warning = (message: string, ...args: Array<string | number>) =>
+export const warning = (message: string, ...args) =>
 {
-  message = `⚠️ ${message}`;
   const values = args.map(value => String(value));
 
-  console.warn(replaceColorTags(formatString(message, values)));
+  console.warn(replaceColorTags(formatString(`⚠️ ${message}`, values)));
 }
 
 // ---
 
-export const error = (message: string, ...args: Array<string | number>) =>
+export const error = (message: string, ...args) =>
 {
-  message = `❌ ${message}`;
   const values = args.map(value => String(value));
 
-  console.error(replaceColorTags(formatString(message, values)));
+  console.error(replaceColorTags(formatString(`❌ ${message}`, values)));
 }

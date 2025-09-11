@@ -1,5 +1,5 @@
 //
-// Created by Erik Riklund (Gopher)
+// Created by Erik Riklund (Gopher) 2025
 // <https://github.com/erik-riklund>
 //
 
@@ -91,9 +91,8 @@ it('should replace all placeholders with "undefined" when values array is empty'
   () =>
   {
     const input = 'Value one: %1. Value two: %2.';
-    const values: string[] = [];
 
-    expect(formatString(input, values)).toBe('Value one: undefined. Value two: undefined.');
+    expect(formatString(input, [])).toBe('Value one: undefined. Value two: undefined.');
   }
 );
 
