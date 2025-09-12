@@ -6,10 +6,10 @@
 //
 
 export function runPipeline (
-  stages: ((input: unknown) => unknown)[]
+  input: unknown, stages: ((input: unknown) => unknown)[]
 )
 {
-  let result: unknown;
+  let result = input;
 
   for (const stage of stages)
   {
@@ -22,10 +22,10 @@ export function runPipeline (
 // ---
 
 export async function runPipelineAsync (
-  stages: ((input: unknown) => Promise<unknown>)[]
+  input: unknown, stages: ((input: unknown) => Promise<unknown>)[]
 )
 {
-  let result: unknown;
+  let result = input;
 
   for (const stage of stages)
   {
