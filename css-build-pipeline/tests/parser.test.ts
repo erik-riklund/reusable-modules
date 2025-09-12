@@ -14,7 +14,8 @@ beforeEach(() => parser = createParser());
 // ---
 
 it('should parse an empty block',
-  () =>
+  
+  async () =>
   {
     const tree = parser.parse('div{}');
 
@@ -22,8 +23,11 @@ it('should parse an empty block',
   }
 );
 
+// ---
+
 it('should parse a block with properties',
-  () =>
+  
+  async () =>
   {
     const tree = parser.parse('div{color:red;}');
 
@@ -32,8 +36,11 @@ it('should parse a block with properties',
   }
 );
 
+// ---
+
 it('should parse nested blocks',
-  () =>
+  
+  async () =>
   {
     const tree = parser.parse('div{& span{}}');
 
@@ -42,8 +49,11 @@ it('should parse nested blocks',
   }
 );
 
+// ---
+
 it('should parse nested blocks with properties',
-  () =>
+  
+  async () =>
   {
     const tree = parser.parse('div{color:red;& span{color:blue;}}');
 
@@ -58,7 +68,8 @@ it('should parse nested blocks with properties',
 // ---
 
 it('should parse a pseudo-class selector',
-  () =>
+  
+  async () =>
   {
     const tree = parser.parse('button:hover{}');
 
@@ -66,8 +77,11 @@ it('should parse a pseudo-class selector',
   }
 );
 
+// ---
+
 it('should parse a nested pseudo-class selector',
-  () =>
+  
+  async () =>
   {
     const tree = parser.parse('button{&:hover{}}');
 
@@ -75,8 +89,11 @@ it('should parse a nested pseudo-class selector',
   }
 );
 
+// ---
+
 it('should parse a pseudo-element selector',
-  () =>
+  
+  async () =>
   {
     const tree = parser.parse('button::before{}');
 
@@ -84,8 +101,11 @@ it('should parse a pseudo-element selector',
   }
 );
 
+// ---
+
 it('should parse an attribute selector',
-  () =>
+  
+  async () =>
   {
     const tree = parser.parse('button[type="submit"]{}');
 
@@ -93,8 +113,11 @@ it('should parse an attribute selector',
   }
 );
 
+// ---
+
 it('should parse multiple selectors for a single block',
-  () =>
+  
+  async () =>
   {
     const tree = parser.parse('h1,h2{}');
 
@@ -102,8 +125,11 @@ it('should parse multiple selectors for a single block',
   }
 );
 
+// ---
+
 it('should parse multiple selectors for a nested block',
-  () =>
+  
+  async () =>
   {
     const tree = parser.parse('div{& h1, & h2{}}');
 
@@ -111,8 +137,11 @@ it('should parse multiple selectors for a nested block',
   }
 );
 
+// ---
+
 it('should parse a `@keyframes` selector',
-  () =>
+  
+  async () =>
   {
     const tree = parser.parse('@keyframes test{}');
 
@@ -120,8 +149,11 @@ it('should parse a `@keyframes` selector',
   }
 );
 
+// ---
+
 it('should parse a `@media` selector',
-  () =>
+  
+  async () =>
   {
     const tree = parser.parse('@media screen and (min-width: 576px){}');
 
@@ -129,8 +161,11 @@ it('should parse a `@media` selector',
   }
 );
 
+// ---
+
 it('should parse a nested `@media` selector',
-  () =>
+  
+  async () =>
   {
     const tree = parser.parse('div{color:red;@media screen and (min-width: 576px){color:blue}}');
 
@@ -138,8 +173,11 @@ it('should parse a nested `@media` selector',
   }
 );
 
+// ---
+
 it('should parse a selector with commas inside parentheses',
-  () =>
+  
+  async () =>
   {
     const tree = parser.parse('div{&:in(a, b){}}');
 
@@ -147,8 +185,11 @@ it('should parse a selector with commas inside parentheses',
   }
 );
 
+// ---
+
 it('should parse a selector with commas inside parentheses mixed with other selectors',
-  () =>
+  
+  async () =>
   {
     const tree = parser.parse('div{& span, &:is(a, b), & h1{}}');
 
@@ -159,25 +200,35 @@ it('should parse a selector with commas inside parentheses mixed with other sele
 // ---
 
 it('should throw an error when reaching the end of the string with unclosed blocks',
-  () => expect(() => parser.parse('div{}span{')).toThrowError('Unexpected end of string')
+  async () => expect(() => parser.parse('div{}span{')).toThrowError('Unexpected end of string')
 );
+
+// ---
 
 it('should throw an error when encountering an unexpected closing brace',
-  () => expect(() => parser.parse('div{}span}')).toThrowError('Unexpected closing brace')
+  async () => expect(() => parser.parse('div{}span}')).toThrowError('Unexpected closing brace')
 );
+
+// ---
 
 it('should throw an error when encountering an unexpected colon',
-  () => expect(() => parser.parse('div{color::red;}')).toThrowError('Unexpected colon')
+  async () => expect(() => parser.parse('div{color::red;}')).toThrowError('Unexpected colon')
 );
+
+// ---
 
 it('should throw an error when encountering an unexpected semicolon',
-  () => expect(() => parser.parse('div{color;}')).toThrowError('Unexpected semicolon')
+  async () => expect(() => parser.parse('div{color;}')).toThrowError('Unexpected semicolon')
 );
+
+// ---
 
 it('should throw an error when encountering an unexpected semicolon (missing property value)',
-  () => expect(() => parser.parse('div{color:;}')).toThrowError('Unexpected semicolon')
+  async () => expect(() => parser.parse('div{color:;}')).toThrowError('Unexpected semicolon')
 );
 
+// ---
+
 it('should throw an error when encountering an unexpected comma (missing selector)',
-  () => expect(() => parser.parse(',div,span{}')).toThrowError('Unexpected comma (expected selector)')
+  async () => expect(() => parser.parse(',div,span{}')).toThrowError('Unexpected comma (expected selector)')
 );

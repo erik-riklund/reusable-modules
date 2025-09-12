@@ -2,12 +2,18 @@
 // Created by Erik Riklund (Gopher) 2025
 // <https://github.com/erik-riklund>
 //
+// @version 2.0.0
+//
 
 import { createParser } from './parser'
 import { createTransformer } from './transformer'
-import { runPipeline } from 'generic-pipeline'
+import { createRenderer } from './renderer'
+
+import { runPipeline, runPipelineAsync } from 'generic-pipeline'
 
 // ---
+
+import type { Block } from './parser'
 
 export type MutableBlock = ReturnType<
   ReturnType<typeof createTransformer>['exposeBlock']
@@ -19,7 +25,7 @@ export function createBuildPipeline (
   plugins: Partial<{
     input: ((input: string) => string)[],
     transform: ((block: MutableBlock) => Promise<void>)[],
-    output: ((input: string) => string)[]
+    output: ((result: { output: string, tree: Block[] }) => Promise<string>)[]
   }> = {}
 )
 {
@@ -39,9 +45,9 @@ export function createBuildPipeline (
 
       await createTransformer().transform(tree, this.plugins.transform);
 
-      // ...
+      const output = createRenderer().render(tree);
 
-      return ''; // @note: dummy return.
+      return await runPipelineAsync({ output, tree }, this.plugins.output) as string;
     }
   }
 

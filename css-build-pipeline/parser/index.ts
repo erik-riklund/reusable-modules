@@ -24,7 +24,7 @@ type Parser = ReturnType<typeof createParser>;
 
 export function createParser ()
 {
-  const instance =
+  const self =
   {
     state:
     {
@@ -49,9 +49,9 @@ export function createParser ()
 
     parse (input: string)
     {
-      const state = this.state as Parser['state'];
+      const state = self.state as Parser['state'];
 
-      while (this.state.currentPosition < input.length)
+      while (self.state.currentPosition < input.length)
       {
         const character = input[state.currentPosition];
 
@@ -89,7 +89,7 @@ export function createParser ()
     }
   }
 
-  return instance;
+  return self;
 }
 
 // ---

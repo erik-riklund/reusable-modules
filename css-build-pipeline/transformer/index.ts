@@ -5,7 +5,6 @@
 
 import { createBuildPipeline } from '..'
 import { runPipelineAsync } from 'generic-pipeline'
-
 import type { Block } from '../parser'
 
 export type Plugin = ReturnType<typeof createBuildPipeline>['plugins']['transform'][0];
@@ -14,7 +13,7 @@ export type Plugin = ReturnType<typeof createBuildPipeline>['plugins']['transfor
 
 export function createTransformer ()
 {
-  const instance =
+  const self =
   {
     exposeBlock (block: Block)
     {
@@ -120,7 +119,7 @@ export function createTransformer ()
 
       for (const block of tree)
       {
-        const mutableBlock = this.exposeBlock(block);
+        const mutableBlock = self.exposeBlock(block);
 
         try
         {
@@ -128,7 +127,7 @@ export function createTransformer ()
 
           if (block.children)
           {
-            operations.push(this.transform(block.children, plugins));
+            operations.push(self.transform(block.children, plugins));
           }
         }
         catch (error)
@@ -144,5 +143,5 @@ export function createTransformer ()
     }
   }
 
-  return instance;
+  return self;
 }
