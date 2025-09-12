@@ -7,7 +7,7 @@ import { handle } from './delimiters'
 
 // ---
 
-type Block =
+export type Block =
   {
     selectors: string[],
     properties?: { key: string, value: string }[],
@@ -96,7 +96,7 @@ export function createParser ()
 
 export class ParsingError extends Error
 {
-  constructor (message: string, state: ReturnType<typeof createParser>['state'])
+  constructor (message: string, state: Parser['state'])
   {
     super(`Parsing error: ${message} @ line ${state.currentLine} (column ${state.currentColumn}).`);
 
