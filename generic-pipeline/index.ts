@@ -13,7 +13,12 @@ export function runPipeline (
 
   for (const stage of stages)
   {
-    result = stage(result);
+    const returnedValue = stage(result);
+
+    if (returnedValue !== undefined)
+    {
+      result = returnedValue; // Only update if a value was returned.
+    }
   }
 
   return result;
@@ -29,7 +34,12 @@ export async function runPipelineAsync (
 
   for (const stage of stages)
   {
-    result = await stage(result);
+    const returnedValue = await stage(result);
+
+    if (returnedValue !== undefined)
+    {
+      result = returnedValue; // Only update if a value was returned.
+    }
   }
 
   return result;
