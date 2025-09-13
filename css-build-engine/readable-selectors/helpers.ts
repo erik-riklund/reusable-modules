@@ -17,8 +17,6 @@ export const parseSelector = (
   const expression = compileSelectorPattern(pattern);
   const matches = expression.exec(selector);
 
-  console.log({ expression, matches });
-
   return !matches ? null : Object.fromEntries(
     labels.map((label, index) => [label, matches[index + 1]])
   );
@@ -59,8 +57,8 @@ const compileSelectorPattern = (pattern: string): RegExp =>
     .replace(/\{([^}]+)}/g, handleGroup)
     .replace(/\s\[([^\]]+)]/g, handleOptionalGroup)
     .replace(/\*\*/g, '"([\\w\\s-]+)"')
-    .replace(/\s\*\?/g, '(?:\\s`([\\w\\s-]+)`)?')
-    .replace(/\*/g, '`([\\w\\s-]+)`');
+    .replace(/\s\*\?/g, '(?:\\s"([\\w\\s-]+)")?')
+    .replace(/\*/g, '"([\\w\\s-]+)"');
 
   compiledPatterns[pattern] = new RegExp(`^${compiledPattern}$`);
 

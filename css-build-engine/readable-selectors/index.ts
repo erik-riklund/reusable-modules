@@ -2,78 +2,73 @@
 // Created by Erik Riklund (Gopher) 2025
 // <https://github.com/erik-riklund>
 //
+// @version 2.0.0
+//
 
-import * as s from './handlers'
+import { handle } from './handlers'
 import { parseSelector } from './helpers'
 
-import type { TransformPlugin } from 'css-pipeline/types'
+import type { TransformPlugin } from 'css-build-engine'
 
-/**
- * Defines the mapping between selectors and handlers.
- */
+// ---
+
 const selectorMap: Record<string, [(segments: Record<string, string>) => string, string[]]> =
 {
   // Attribute selectors can be used to apply styles based on
   // the presence or value of attributes.
 
   'attribute * [is missing]': [
-    s.handleAttributeSelector, ['name', 'keyword']
+    handle.attributeSelector, ['name', 'keyword']
   ],
   'attribute * {is,is not} **': [
-    s.handleAttributeValueSelector, ['name', 'keyword', 'value']
+    handle.attributeValueSelector, ['name', 'keyword', 'value']
   ],
-
-  // The base selector can be used to match the root element.
-
-  'base': [s.handleBaseSelector, []],
 
   // Relationship selectors can be used to match descendants of other elements.
 
   '{child,sibling,adjacent,descendant} {element,group} *': [
-    s.handleRelationshipSelector, ['selector', 'type', 'name']
+    handle.relationshipSelector, ['selector', 'type', 'name']
   ],
 
   // Device selectors can be used to apply styles based on screen size.
 
   'device {mobile,tablet,laptop,desktop}': [
-    s.handleDeviceSelector, ['device']
+    handle.deviceSelector, ['device']
   ],
   'device [mobile,tablet,laptop,desktop] .. [mobile,tablet,laptop,desktop]': [
-    s.handleDeviceRangeSelector, ['fromDevice', 'toDevice']
+    handle.deviceRangeSelector, ['fromDevice', 'toDevice']
   ],
+
+  // The base selector can be used to match the root element.
+
+  'global': [handle.globalSelector, []],
 
   // Identifier selectors are classes and unique identifiers.
 
   '{group,unique} *': [
-    s.handleIdentifierSelector, ['selector', 'name']
+    handle.identifierSelector, ['selector', 'name']
   ],
-
-  // The scope selector can be used to create styles that only
-  // apply within a specific context.
-
-  'scope *': [s.handleScopeSelector, ['name']],
 
   // State selectors can be used to match elements using custom group-based states.
 
   'state {is,is not} *': [
-    s.handleStateSelector, ['keyword', 'state']
+    handle.stateSelector, ['keyword', 'state']
   ],
 
   // When selectors can be used to target pseudo-classes.
 
-  'when [not] *': [s.handleWhenSelector, ['keyword', 'state']],
+  'when [not] *': [handle.whenSelector, ['keyword', 'state']],
 
   // Context selectors can be used to match elements based on
   // the presence of descendant elements or groups.
 
   '{with,without} {child,sibling,adjacent,descendant} {element,group} *': [
-    s.handleContextSelector, ['selector', 'relationship', 'type', 'name']
+    handle.contextSelector, ['selector', 'relationship', 'type', 'name']
   ]
 };
 
-/**
- * Transforms the given selectors into standard CSS.
- */
+// ---
+
 export const handleSelectors = (selectors: string[]): string[] =>
 {
   let result = [];
@@ -104,15 +99,14 @@ export const handleSelectors = (selectors: string[]): string[] =>
   return result;
 }
 
-/**
- * ?
- */
+// ---
+
 export const readableSelectors = (): TransformPlugin =>
 {
   return {
-    stage: 'transform',
+    type: 'transform',
 
-    handler: (block) =>
+    plugin: async (block) =>
     {
       const selectors = block.getSelectors();
 
