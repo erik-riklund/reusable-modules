@@ -5,9 +5,9 @@
 
 import { createBuildPipeline } from '..'
 import { runPipelineAsync } from 'generic-pipeline'
-import type { Block } from '../parser'
 
-export type Plugin = ReturnType<typeof createBuildPipeline>['plugins']['transform'][0];
+import type { Block } from '../parser'
+import type { TransformPlugin } from '..'
 
 // ---
 
@@ -84,13 +84,13 @@ export function createTransformer ()
         // ---
         getProperties (): Array<{ key: string, value: string }>
         {
-          return [...block.properties!.map(property => ({ ...property }))];
+          return [...(block.properties?.map(property => ({ ...property }))|| [])];
         },
 
         // ---
         setProperty (key: string, value: string): void
         {
-          const property = block.properties!.find(property => property.key === key);
+          const property = block.properties?.find(property => property.key === key);
 
           if (property)
           {
@@ -98,7 +98,9 @@ export function createTransformer ()
           }
           else
           {
-            block.properties!.push({ key, value });
+            block.properties ??= [];
+
+            block.properties.push({ key, value });
           }
         },
 
@@ -113,7 +115,7 @@ export function createTransformer ()
     },
 
     // ---
-    async transform (tree: Block[], plugins: Plugin[]): Promise<void>
+    async transform (tree: Block[], plugins: TransformPlugin[]): Promise<void>
     {
       const operations = [];
 

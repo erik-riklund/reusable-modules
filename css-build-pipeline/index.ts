@@ -19,17 +19,17 @@ export type MutableBlock = ReturnType<
   ReturnType<typeof createTransformer>['exposeBlock']
 >;
 
+export type InputPlugin = (input: string) => string;
+export type TransformPlugin = (block: MutableBlock) => Promise<void>;
+export type OutputPlugin = (result: { output: string, tree: Block[] }) => Promise<string>;
+
 // ---
 
 export function createBuildPipeline (
-  plugins: Partial<{
-    input: ((input: string) => string)[],
-    transform: ((block: MutableBlock) => Promise<void>)[],
-    output: ((result: { output: string, tree: Block[] }) => Promise<string>)[]
-  }> = {}
+  plugins: Partial<{ input: InputPlugin[], transform: TransformPlugin[], output: OutputPlugin[] }> = {}
 )
 {
-  const instance =
+  const self =
   {
     plugins: {
       input: [...plugins.input],
@@ -40,16 +40,18 @@ export function createBuildPipeline (
     async run (input: string): Promise<string>
     {
       const tree = createParser().parse(
-        runPipeline(input, this.plugins.input) as string
+        runPipeline(input, self.plugins.input) as string
       );
 
-      await createTransformer().transform(tree, this.plugins.transform);
+      await createTransformer().transform(tree, self.plugins.transform);
 
       const output = createRenderer().render(tree);
+      const result = (self.plugins.output.length === 0) ? output
+        : await runPipelineAsync({ output, tree }, self.plugins.output);
 
-      return await runPipelineAsync({ output, tree }, this.plugins.output) as string;
+      return result as string;
     }
   }
 
-  return instance;
+  return self;
 }
