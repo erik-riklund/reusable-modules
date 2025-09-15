@@ -5,9 +5,9 @@
 // @version 2.0.0
 //
 
-export function runPipeline (
-  input: unknown, stages: ((input: unknown) => unknown)[]
-)
+export function runPipeline<
+  I extends unknown = any, R extends unknown = any> (
+    input: I, stages: ((input: unknown) => unknown)[]): R
 {
   let result = input;
 
@@ -17,18 +17,20 @@ export function runPipeline (
 
     if (returnedValue !== undefined)
     {
+      // @ts-expect-error: Type 'unknown' is not assignable to type 'I'.
+
       result = returnedValue; // Only update if a value was returned.
     }
   }
 
-  return result;
+  return result as unknown as R;
 }
 
 // ---
 
-export async function runPipelineAsync (
-  input: unknown, stages: ((input: unknown) => Promise<unknown>)[]
-)
+export async function runPipelineAsync<
+  I extends unknown = any, R extends unknown = any> (
+    input: I, stages: ((input: unknown) => Promise<unknown>)[]): Promise<R>
 {
   let result = input;
 
@@ -38,9 +40,11 @@ export async function runPipelineAsync (
 
     if (returnedValue !== undefined)
     {
+      // @ts-expect-error: Type 'unknown' is not assignable to type 'I'.
+
       result = returnedValue; // Only update if a value was returned.
     }
   }
 
-  return result;
+  return result as unknown as R;
 }
