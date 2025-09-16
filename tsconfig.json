@@ -1,3 +1,11 @@
 {
-  "compilerOptions": { "baseUrl": "." }
+  "compilerOptions":
+  {
+    "baseUrl": ".",
+
+    "module": "ESNext",
+    "moduleDetection": "force",
+    "moduleResolution": "bundler",
+    "target": "ESNext"
+  }
 }

@@ -2,5 +2,15 @@
   "private": true,
   "devDependencies": {
     "@types/bun": "latest"
-  }
+  },
+  "workspaces": [
+    "colored-logs",
+    "css-processor",
+    "file-watcher",
+    "filesystem-adapter",
+    "format-string",
+    "generic-pipeline",
+    "html-based-templates",
+    "path-filter"
+  ]
 }
