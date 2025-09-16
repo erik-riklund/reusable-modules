@@ -3,11 +3,10 @@
 // <https://github.com/erik-riklund>
 //
 
-import { createBuildPipeline } from '..'
-import { runPipelineAsync } from 'generic-pipeline'
-
 import type { Block } from '../parser'
 import type { TransformPlugin } from '..'
+
+import { runPipelineAsync } from 'generic-pipeline'
 
 // ---
 

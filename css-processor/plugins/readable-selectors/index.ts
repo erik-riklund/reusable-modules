@@ -8,7 +8,7 @@
 import { handle } from './handlers'
 import { parseSelector } from './helpers'
 
-import type { TransformPlugin } from 'css-build-engine'
+import type { TransformPlugin } from 'css-processor'
 
 // ---
 

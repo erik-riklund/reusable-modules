@@ -9,9 +9,9 @@ import type {
   InputPlugin as PipelineInputPlugin,
   TransformPlugin as PipelineTransformPlugin,
   OutputPlugin as PipelineOutputPlugin
-} from 'css-build-pipeline'
+} from 'css-processor/pipeline'
 
-import { createBuildPipeline } from 'css-build-pipeline'
+import { createBuildPipeline } from 'css-processor/pipeline'
 
 // ---
 
@@ -23,7 +23,7 @@ export type OutputPlugin = { type: 'output', plugin: PipelineOutputPlugin };
 
 // ---
 
-export function createBuildEngine (plugins: Plugins = [])
+export function createCssProcessor (plugins: Plugins = [])
 {
   const pipeline = createBuildPipeline(
     {

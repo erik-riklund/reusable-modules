@@ -5,7 +5,7 @@
 // @version 2.0.0
 //
 
-import type { TransformPlugin } from 'css-build-engine'
+import type { TransformPlugin } from 'css-processor'
 
 // ---
 

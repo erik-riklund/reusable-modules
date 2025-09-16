@@ -4,13 +4,13 @@
 //
 
 import { reusableBlocks } from '..'
-import { createBuildEngine } from 'css-build-engine'
+import { createCssProcessor } from 'css-processor'
 import { it, expect, beforeEach } from 'bun:test'
 
 // ---
 
 let transform: (input: string) => Promise<string>;
-beforeEach(() => transform = createBuildEngine([...reusableBlocks()]));
+beforeEach(() => transform = createCssProcessor([...reusableBlocks()]));
 
 // ---
 
