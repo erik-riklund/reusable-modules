@@ -3,7 +3,12 @@
 // <https://github.com/erik-riklund>
 //
 
-export const createTemplateEngine = () =>
+export function createTemplateManager ()
 {
-  // ...
+  const self =
+  {
+    // ...
+  }
+
+  return self;
 }
