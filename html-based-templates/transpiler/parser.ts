@@ -99,9 +99,9 @@ export function createTemplateParser ()
           switch (character)
           {
             case '<':
-              if (state.currentElementName && !state.isAttributeValue)
+              if (state.isElement && !state.isAttributeValue)
               {
-                // throw error -> unexpected opening bracket.
+                throw new ParsingError('unexpected opening bracket', state);
               }
 
               state.isElement = true;
@@ -109,52 +109,54 @@ export function createTemplateParser ()
               break;
 
             case '>':
-              if (!state.isElement)
+              if (state.isAttributeValue)
               {
-                // throw error -> unexpected closing bracket.
-              }
-
-              if (!state.isAttributeValue)
-              {
-                if (!state.currentElementName)
-                {
-                  state.currentElementName = state.buffer;
-                }
-
-                if (state.isAttribute && !state.currentAttributeName)
-                {
-                  // handle attribute with an implicit value.
-                  state.currentElementAttributes[state.buffer] = '';
-                }
-
-                invokeOpeningTagCallback = !state.isClosingElement;
-                invokeClosingTagCallback = state.isClosingElement;
-
-                if (!state.isClosingElement)
-                {
-                  state.ignoredElementName = state.currentElementName;
-                  state.isIgnoringContent = ignoreContentInsideElements.includes(state.currentElementName);
-                }
-
+                state.buffer += character; // keep the closing bracket in attribute values.
                 break; // move on to the next character.
               }
 
-              state.buffer += character; // keep the closing bracket in attribute values.
+              if (!state.isElement)
+              {
+                throw new ParsingError('unexpected closing bracket', state);
+              }
+
+              // ---
+
+              if (!state.currentElementName)
+              {
+                state.currentElementName = state.buffer;
+              }
+
+              if (state.isAttribute && !state.currentAttributeName)
+              {
+                // handle an attribute with an implicit value.
+                state.currentElementAttributes[state.buffer] = '';
+              }
+
+              invokeOpeningTagCallback = !state.isClosingElement;
+              invokeClosingTagCallback = state.isClosingElement;
+
+              if (!state.isClosingElement)
+              {
+                state.ignoredElementName = state.currentElementName;
+                state.isIgnoringContent = ignoreContentInsideElements.includes(state.currentElementName);
+              }
+
               break;
 
             case '/':
-              if (state.isElement && !state.isAttributeValue)
+              if (!state.isElement || state.isAttributeValue)
               {
-                if (state.currentElementName)
-                {
-                  // throw error -> unexpected forward slash.
-                }
-
-                state.isClosingElement = true;
+                state.buffer += character; // keep the forward slash.
                 break; // move on to the next character.
               }
 
-              state.buffer += character; // keep the forward slash.
+              if (state.currentElementName)
+              {
+                throw new ParsingError('unexpected forward slash', state);
+              }
+
+              state.isClosingElement = true;
               break;
 
             case ' ':
@@ -166,7 +168,7 @@ export function createTemplateParser ()
 
               if (state.isClosingElement)
               {
-                // throw error -> unexpected space.
+                throw new ParsingError('unexpected space', state);
               }
 
               if (!state.currentElementName)
@@ -187,7 +189,7 @@ export function createTemplateParser ()
 
               if (!state.currentElementName || state.isClosingElement || !state.buffer || !state.isAttribute)
               {
-                // throw error -> unexpected equals sign.
+                throw new ParsingError('unexpected equals sign', state);
               }
 
               state.currentAttributeName = state.buffer;
@@ -204,8 +206,8 @@ export function createTemplateParser ()
               {
                 state.isAttributeValue = true;
                 state.currentAttributeName = state.buffer;
-
                 state.buffer = ''; // reset the buffer.
+
                 break; // move on to the next character.
               }
 
