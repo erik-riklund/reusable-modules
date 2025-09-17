@@ -3,7 +3,13 @@
 // <https://github.com/erik-riklund>
 //
 
-export function createTemplateManager ()
+import type { Cacher } from './cacher'
+import type { Loader } from './loader'
+
+// ---
+
+export function createTemplateManager (
+  { cacher, loader }: { cacher: Cacher, loader: Loader })
 {
   const self =
   {

@@ -9,9 +9,10 @@ import { handle } from './delimiters'
 
 export type Block =
   {
-    selectors: string[],
-    properties?: { key: string, value: string }[],
-    children?: Block[],
+    selectors: Array<string>,
+    properties?: Array<{ key: string, value: string }>,
+    children?: Array<Block>,
+    
     metadata: {
       start: { line: number; column: number };
       end?: { line: number; column: number }
@@ -29,9 +30,9 @@ export function createParser ()
     state:
     {
       buffer: '',
-      tree: [] as Block[],
-      stack: [] as Block[],
-      selectorStack: [] as string[],
+      tree: [] as Array<Block>,
+      stack: [] as Array<Block>,
+      selectorStack: [] as Array<string>,
 
       currentPosition: 0,
       currentLine: 1,
@@ -49,9 +50,9 @@ export function createParser ()
 
     parse (input: string)
     {
-      const state = self.state as Parser['state'];
+      const state = self.state;
 
-      while (self.state.currentPosition < input.length)
+      while (state.currentPosition < input.length)
       {
         const character = input[state.currentPosition];
 
